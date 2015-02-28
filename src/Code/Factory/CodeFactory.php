@@ -2,6 +2,7 @@
 
 namespace FileModifier\Code\Factory;
 
+use FileModifier\Code\Entities\PHPClass;
 use FileModifier\Code\Entities\PHPMethod;
 use FileModifier\Code\Entities\PHPNamespace;
 use FileModifier\Code\Entities\PHPProperty;
@@ -38,6 +39,7 @@ class CodeFactory implements CodeFactoryContract
         $method->definition($definition);
         $method->setVisibility($modifiers);
         $method->setAbstract($modifiers & PHPMethod::IS_ABSTRACT);
+        $method->setFinal($modifiers & PHPMethod::IS_FINAL);
         $method->setStatic($modifiers & PHPMethod::IS_STATIC);
 
         return $method;
@@ -58,5 +60,22 @@ class CodeFactory implements CodeFactoryContract
         $property->setStatic($modifiers & PHPMethod::IS_STATIC);
 
         return $property;
+    }
+
+    /**
+     * Create a class
+     *
+     * @param string $name
+     * @param int    $modifiers
+     *
+     * @return PHPClass
+     */
+    public function buildClass($name, $modifiers = 0)
+    {
+        $class = new PHPClass($name, $this);
+        $class->setAbstract($modifiers & PHPClass::IS_ABSTRACT);
+        $class->setFinal($modifiers & PHPClass::IS_FINAL);
+
+        return $class;
     }
 }

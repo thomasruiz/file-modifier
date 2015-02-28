@@ -2,6 +2,7 @@
 
 namespace FileModifier\Code\Factory;
 
+use FileModifier\Code\Entities\PHPClass;
 use FileModifier\Code\Entities\PHPMethod;
 use FileModifier\Code\Entities\PHPNamespace;
 use FileModifier\Code\Entities\PHPProperty;
@@ -37,4 +38,11 @@ interface CodeFactoryContract
      * @return PHPNamespace
      */
     public function buildNamespace($name = PHPNamespace::NO_NAMESPACE);
+
+    /**
+     * @param string $name
+     *
+     * @return PHPClass
+     */
+    public function buildClass($name);
 }

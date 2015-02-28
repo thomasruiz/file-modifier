@@ -10,6 +10,9 @@ class PHPClass
 {
     use AbstractTrait, FinalTrait;
 
+    const IS_ABSTRACT  = 0x01;
+    const IS_FINAL     = 0x02;
+
     /**
      * @var string
      */

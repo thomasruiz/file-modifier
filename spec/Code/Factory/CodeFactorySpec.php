@@ -2,6 +2,7 @@
 
 namespace spec\FileModifier\Code\Factory;
 
+use FileModifier\Code\Entities\PHPClass;
 use FileModifier\Code\Entities\PHPMethod;
 use FileModifier\Code\Entities\PHPProperty;
 use FileModifier\Code\Factory\CodeFactory;
@@ -40,6 +41,7 @@ class CodeFactorySpec extends ObjectBehavior
         $method->getVisibility()->shouldBe(PHPMethod::IS_PUBLIC);
         $method->isStatic()->shouldBe(true);
         $method->isAbstract()->shouldBe(true);
+        $method->isFinal()->shouldBe(true);
     }
 
     /**
@@ -52,5 +54,17 @@ class CodeFactorySpec extends ObjectBehavior
         $property->getName()->shouldBe('foo');
         $property->getVisibility()->shouldBe(PHPMethod::IS_PROTECTED);
         $property->isStatic()->shouldBe(true);
+    }
+
+    /**
+     * Can create class
+     */
+    function it_can_create_class()
+    {
+        $class = $this->buildClass('Foo', PHPClass::IS_FINAL | PHPClass::IS_ABSTRACT);
+        $class->shouldBeAnInstanceOf('\FileModifier\Code\Entities\PHPClass');
+        $class->getName()->shouldBe('Foo');
+        $class->isAbstract()->shouldBe(true);
+        $class->isFinal()->shouldBe(true);
     }
 }
