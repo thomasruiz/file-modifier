@@ -12,12 +12,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FileSpec extends ObjectBehavior
 {
+    function let(PHPNamespace $namespace)
+    {
+        $namespace->getName()->willReturn(PHPNamespace::NO_NAMESPACE);
+        $this->beConstructedWith($namespace);
+    }
+    
     /**
      * Has namespaces
      */
     function it_has_namespaces(PHPNamespace $namespace, PHPNamespace $namespaceAdded)
     {
-        $this->addNamespace($namespace);
         $this->getNamespaces()->shouldBe([ $namespace ]);
 
         $namespace->getName()->willReturn(PHPNamespace::NO_NAMESPACE);
@@ -29,5 +34,13 @@ class FileSpec extends ObjectBehavior
         $namespace->setName(PHPNamespace::GLOBAL_NAMESPACE)->shouldBeCalled();
         $this->addNamespace($namespaceAdded);
         $this->getNamespaces()->shouldBe([ $namespace, $namespaceAdded ]);
+    }
+
+    /**
+     * Has a current namespace
+     */
+    function it_has_a_current_namespace(PHPNamespace $namespace)
+    {
+        $this->getCurrentNamespace()->shouldBe($namespace);
     }
 }

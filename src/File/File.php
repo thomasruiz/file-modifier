@@ -12,9 +12,12 @@ class File
 
     /**
      * Construct a new File object
+     *
+     * @param PHPNamespace $namespace
      */
-    public function __construct()
+    public function __construct(PHPNamespace $namespace)
     {
+        $this->namespaces[] = $namespace;
     }
 
     /**
@@ -40,5 +43,13 @@ class File
     public function getNamespaces()
     {
         return $this->namespaces;
+    }
+
+    /**
+     * @return PHPNamespace
+     */
+    public function getCurrentNamespace()
+    {
+        return $this->namespaces[ count($this->namespaces) - 1 ];
     }
 }

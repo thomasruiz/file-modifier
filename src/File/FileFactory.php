@@ -45,8 +45,7 @@ class FileFactory implements FileFactoryContract
      */
     public function build($contents)
     {
-        $file = new File();
-        $file->addNamespace($this->codeFactory->buildNamespace());
+        $file = new File($this->codeFactory->buildNamespace());
 
         $nodes = $this->PHPParser->parse($contents);
         $this->parser->parse($nodes, $file);
