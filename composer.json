@@ -1,0 +1,29 @@
+{
+    "name": "thomasruiz/file-modifier",
+    "description": "A great API to modify your files.",
+    "require": {
+        "nikic/php-parser": "~1.1",
+        "league/flysystem": "~1.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1"
+    },
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Ruiz",
+            "email": "contact@thomasruiz.eu"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "FileModifier\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\FileModifier\\": "spec"
+        }
+    }
+}

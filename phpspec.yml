@@ -1,0 +1,6 @@
+suites:
+  filehandler_suites:
+    namespace: FileModifier
+    psr4_prefix: FileModifier
+
+formatter.name: pretty
