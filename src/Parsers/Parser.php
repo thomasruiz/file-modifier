@@ -1,10 +1,13 @@
 <?php namespace FileModifier\Parsers;
 
+use FileModifier\Code\Entities\PHPClass;
+use FileModifier\Code\Entities\PHPNamespace;
 use FileModifier\Code\Factory\CodeFactoryContract;
 use FileModifier\Errors\PHPErrorThrowerContract;
 use FileModifier\File\File;
 use PhpParser\Lexer;
 use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Namespace_;
 
 class Parser implements ParserContract
@@ -15,6 +18,7 @@ class Parser implements ParserContract
      */
     private $types = [
         'Stmt_Namespace' => 'Namespace',
+        'Stmt_Class'     => 'Class',
     ];
 
     /**
@@ -35,7 +39,7 @@ class Parser implements ParserContract
      */
     public function __construct(CodeFactoryContract $codeFactory, PHPErrorThrowerContract $errorThrower)
     {
-        $this->codeFactory = $codeFactory;
+        $this->codeFactory  = $codeFactory;
         $this->errorThrower = $errorThrower;
     }
 
@@ -47,8 +51,12 @@ class Parser implements ParserContract
     {
         foreach ($nodes as $node) {
             $type = $node->getType();
-            if (isset($this->types[$type])) {
-                $this->{"handle{$this->types[$type]}"}($node, $target);
+            if (isset( $this->types[ $type ] )) {
+                if ($target instanceof File && $type !== 'Stmt_Namespace') {
+                    $this->{"handle{$this->types[$type]}"}($node, $target->getCurrentNamespace());
+                } else {
+                    $this->{"handle{$this->types[$type]}"}($node, $target);
+                }
             } else {
                 $this->errorThrower->warning("Ignored node: $type.");
             }
@@ -65,5 +73,20 @@ class Parser implements ParserContract
         $namespace = $this->codeFactory->buildNamespace($name);
         $target->addNamespace($namespace);
         $this->parse($node->stmts, $namespace);
+    }
+
+    /**
+     * @param Class_       $node
+     * @param PHPNamespace $target
+     */
+    public function handleClass(Class_ $node, PHPNamespace $target)
+    {
+        $name  = $node->name;
+        $modifiers = 0;
+        $modifiers |= $node->isAbstract() ? PHPClass::IS_ABSTRACT : 0;
+        $modifiers |= $node->isFinal() ? PHPClass::IS_FINAL : 0;
+        $class = $this->codeFactory->buildClass($name, $modifiers);
+        $target->addClass($class);
+        $this->parse($node->stmts, $class);
     }
 }
