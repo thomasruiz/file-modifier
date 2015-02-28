@@ -1,5 +1,6 @@
 <?php namespace spec\FileModifier\Code\Entities;
 
+use FileModifier\Code\Entities\PHPClass;
 use FileModifier\Code\Entities\PHPNamespace;
 use PhpSpec\ObjectBehavior;
 
@@ -14,6 +15,15 @@ class PHPNamespaceSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith('foo');
+    }
+
+    /**
+     * Has classes
+     */
+    function it_has_classes(PHPClass $class)
+    {
+        $this->addClass($class);
+        $this->isEmpty()->shouldReturn(false);
     }
 
     /**

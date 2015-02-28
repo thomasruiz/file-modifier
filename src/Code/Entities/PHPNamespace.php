@@ -12,6 +12,11 @@ class PHPNamespace
     private $name;
 
     /**
+     * @var array
+     */
+    private $entites = [];
+
+    /**
      * Construct a new PHPNamespace object
      *
      * @param int|string $name
@@ -19,6 +24,14 @@ class PHPNamespace
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param PHPClass $class
+     */
+    public function addClass(PHPClass $class)
+    {
+        $this->entites[] = $class;
     }
 
     /**
@@ -46,6 +59,6 @@ class PHPNamespace
      */
     public function isEmpty()
     {
-        return true;
+        return empty($this->entites);
     }
 }
