@@ -35,6 +35,14 @@ class PHPNamespace
     }
 
     /**
+     * @return array
+     */
+    public function getEntities()
+    {
+        return $this->entites;
+    }
+
+    /**
      * @return string|int
      */
     public function getName()
