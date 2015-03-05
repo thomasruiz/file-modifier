@@ -42,5 +42,6 @@ class PHPNamespaceSpec extends ObjectBehavior
     function it_is_empty_by_default()
     {
         $this->isEmpty()->shouldReturn(true);
+        $this->getEntities()->shouldReturn([]);
     }
 }
